@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Writer</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+    }
+    h2, h3 {
+      margin: 5px;
+    }
+    .display {
+      width: 80%;
+      height: 80px;
+      margin: 20px auto;
+      border: 1px solid black;
+      padding: 10px;
+      background-color: white;
+      text-align: left;
+      font-size: 20px;
+      overflow-y: auto;
+    }
+    .keyboard {
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .row {
+      margin: 5px;
+    }
+    label {
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      border: 1px solid #888;
+      border-radius: 5px;
+      margin: 2px;
+      background-color: #eee;
+    }
+    .group1 { background-color: #aaaaaa; } /* 숫자 */
+    .group2 { background-color: #bbbbbb; } /* q~p */
+    .group3 { background-color: #cccccc; } /* a~; */
+    .group4 { background-color: #dddddd; } /* z~/ */
+  </style>
+</head>
+<body>
+
+  <h2>한양여자대학교 빅데이터과</h2>
+  <h3>2400990 김향미</h3>
+
+  <div id="displayBox" class="display"></div>
+
+  <div class="keyboard">
+    <div class="row">
+      <label class="group1">1</label>
+      <label class="group1">2</label>
+      <label class="group1">3</label>
+      <label class="group1">4</label>
+      <label class="group1">5</label>
+      <label class="group1">6</label>
+      <label class="group1">7</label>
+      <label class="group1">8</label>
+      <label class="group1">9</label>
+      <label class="group1">0</label>
+    </div>
+    <div class="row">
+      <label class="group2">q</label>
+      <label class="group2">w</label>
+      <label class="group2">e</label>
+      <label class="group2">r</label>
+      <label class="group2">t</label>
+      <label class="group2">y</label>
+      <label class="group2">u</label>
+      <label class="group2">i</label>
+      <label class="group2">o</label>
+      <label class="group2">p</label>
+    </div>
+    <div class="row">
+      <label class="group3">a</label>
+      <label class="group3">s</label>
+      <label class="group3">d</label>
+      <label class="group3">f</label>
+      <label class="group3">g</label>
+      <label class="group3">h</label>
+      <label class="group3">j</label>
+      <label class="group3">k</label>
+      <label class="group3">l</label>
+      <label class="group3">;</label>
+    </div>
+    <div class="row">
+      <label class="group4">z</label>
+      <label class="group4">x</label>
+      <label class="group4">c</label>
+      <label class="group4">v</label>
+      <label class="group4">b</label>
+      <label class="group4">n</label>
+      <label class="group4">m</label>
+      <label class="group4">,</label>
+      <label class="group4">.</label>
+      <label class="group4">/</label>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      let display = document.getElementById("displayBox");
+
+      document.addEventListener("keydown", function (event) {
+        let key = event.key;
+        let allow = "1234567890qwertyuiopasdfghjkl;zxcvbnm,./";
+
+        // 소문자로 변경
+        key = key.toLowerCase();
+
+        if (allow.includes(key)) {
+          display.textContent += key;
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>
