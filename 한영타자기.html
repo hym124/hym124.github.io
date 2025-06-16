@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Writer - 한영</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+    }
+    h2, h3 {
+      margin: 5px;
+    }
+    .display {
+      width: 80%;
+      height: 80px;
+      margin: 20px auto;
+      border: 1px solid black;
+      padding: 10px;
+      background-color: white;
+      text-align: left;
+      font-size: 20px;
+      overflow-y: auto;
+    }
+    .keyboard {
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .row {
+      margin: 5px;
+    }
+    label {
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      border: 1px solid #888;
+      border-radius: 5px;
+      margin: 2px;
+      background-color: #eee;
+      transition: background-color 0.1s;
+    }
+    .group1 { background-color: #aaaaaa; } /* 숫자 */
+    .group2 { background-color: #bbbbbb; } /* q~p or 한글1 */
+    .group3 { background-color: #cccccc; } /* a~l or 한글2 */
+    .group4 { background-color: #dddddd; } /* z~/ or 한글3 */
+    .active {
+      background-color: yellow !important;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>한양여자대학교 빅데이터과</h2>
+  <h3>2400990 김향미</h3>
+
+  <div id="displayBox" class="display"></div>
+
+  <div class="keyboard" id="keyboard"></div>
+
+  <script>
+    const display = document.getElementById("displayBox");
+    const keyboard = document.getElementById("keyboard");
+    let isKorean = false;
+
+    const engLayout = [
+      ["1","2","3","4","5","6","7","8","9","0"],
+      ["q","w","e","r","t","y","u","i","o","p"],
+      ["a","s","d","f","g","h","j","k","l",";"],
+      ["z","x","c","v","b","n","m",",","영"]
+    ];
+
+    const korLayout = [
+      ["1","2","3","4","5","6","7","8","9","0"],
+      ["ㅂ","ㅈ","ㄷ","ㄱ","ㅅ","ㅛ","ㅕ","ㅑ","ㅐ","ㅔ"],
+      ["ㅁ","ㄴ","ㅇ","ㄹ","ㅎ","ㅗ","ㅓ","ㅏ","ㅣ",";"],
+      ["ㅋ","ㅌ","ㅊ","ㅍ","ㅠ","ㅜ","ㅡ",",","한"]
+    ];
+
+    function renderKeyboard() {
+      keyboard.innerHTML = "";
+      const layout = isKorean ? korLayout : engLayout;
+      layout.forEach((rowArr, idx) => {
+        const row = document.createElement("div");
+        row.className = "row";
+        rowArr.forEach((key) => {
+          const label = document.createElement("label");
+          label.textContent = key;
+          label.className = `group${idx + 1}`;
+          label.id = "key_" + key;
+          row.appendChild(label);
+        });
+        keyboard.appendChild(row);
+      });
+
+    }
+
+    function toggleLanguage() {
+      isKorean = !isKorean;
+      renderKeyboard();
+    }
+
+    function flashKey(char) {
+      const label = document.getElementById("key_" + char);
+      if (label) {
+        label.classList.add("active");
+        setTimeout(() => label.classList.remove("active"), 150);
+      }
+    }
+
+    document.addEventListener("keydown", function (event) {
+      let key = event.key.toLowerCase();
+
+      // '.' 키로 한/영 전환
+      if (key === ".") {
+        toggleLanguage();
+        return;
+      }
+
+      if (!isKorean) {
+        const allow = "1234567890qwertyuiopasdfghjkl;'zxcvbnm,.";
+        if (allow.includes(key)) {
+          display.textContent += key;
+          flashKey(key);
+        }
+    } else {
+      // 한글 자음/모음 직접 매핑
+      const hangulMap = {
+        "q": "ㅂ", "w": "ㅈ", "e": "ㄷ", "r": "ㄱ", "t": "ㅅ",
+        "y": "ㅛ", "u": "ㅕ", "i": "ㅑ", "o": "ㅐ", "p": "ㅔ",
+        "a": "ㅁ", "s": "ㄴ", "d": "ㅇ", "f": "ㄹ", "g": "ㅎ",
+        "h": "ㅗ", "j": "ㅓ", "k": "ㅏ", "l": "ㅣ",
+        "z": "ㅋ", "x": "ㅌ", "c": "ㅊ", "v": "ㅍ",
+        "b": "ㅠ", "n": "ㅜ", "m": "ㅡ"
+      };
+
+      if (hangulMap[key]) {
+        display.textContent += hangulMap[key];
+        flashKey(hangulMap[key]);
+      } else {
+        // 자음/모음 외에도 숫자나 특수문자 그대로 출력
+        const allowEtc = "1234567890;',.";
+        if (allowEtc.includes(key)) {
+          display.textContent += key;
+          flashKey(key);
+        }
+      }
+}
+    });
+
+    renderKeyboard(); // 처음 로드 시 영어 자판 표시
+  </script>
+
+</body>
+</html>
