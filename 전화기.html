@@ -1,0 +1,48 @@
+﻿<html>
+<head>
+	<style>
+		button { width:40px; height: 40px; margin: 2px;}
+		#display {margin-bottom: 10px; font-size: 18px;}
+	</style>
+</head>
+<body>
+	<div id="display"></div>
+	<div>
+		<button onclick="press('1')">1</button>
+		<button onclick="press('2')">2</button>
+		<button onclick="press('3')">3</button><br>
+		<button onclick="press('4')">4</button>
+		<button onclick="press('5')">5</button>
+		<button onclick="press('6')">6</button><br>
+		<button onclick="press('7')">7</button>
+		<button onclick="press('8')">8</button>
+		<button onclick="press('9')">9</button><br>
+		<button onclick="press('*')">*</button>
+		<button onclick="press('0')">0</button>
+		<button onclick="press('#')">#</button>
+	</div>
+
+	<script>
+		let input = "";
+
+		function press(val){
+			if(val >= '0' && val <= '9'){
+				if(input.replace(/-/g, '').length<11) {
+					input += val;
+				}
+			}else{
+				input += val;
+			}
+		
+			let num = input.replace(/[^0-9]/g, '');
+
+			if(num.length >= 4 && num.length <= 7)
+				input = num.slice(0, 3) + '-' + num.slice(3);
+			else if (num.length >= 8)
+				input = num.slice(0, 3) + '-' + num.slice(3, 7) + '-' + num.slice(7, 11);
+
+			document.getElementById("display").innerText = input;
+		}
+		</script>
+	</body>
+	</html>
