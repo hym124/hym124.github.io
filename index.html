@@ -1,12 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산기</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f0f0;
+      margin: 0;
+    }
+
+    .operator {
+      width: 300px;
+      padding: 20px;
+      border: 2px solid black;
+      background-color: white;
+    }
+
+    .display {
+      width: 100%;
+      height: 60px;
+      font-size: 24px;
+      text-align: right;
+      padding: 10px;
+      border: 2px solid #ccc;
+      margin-bottom: 15px;
+      background: #f9f9f9;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* 숫자 버튼: 동그라미 */
+    button:is(:nth-child(5), :nth-child(6), :nth-child(7),
+              :nth-child(9), :nth-child(10), :nth-child(11),
+              :nth-child(13), :nth-child(14), :nth-child(15),
+              :nth-child(17), :nth-child(18)) {
+      background-color: #d0f0ff;
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+    }
+
+    /* 사칙연산자: 네모 */
+    button:is(:nth-child(4), :nth-child(8), :nth-child(12), :nth-child(16)) {
+      background-color: #ffd9d9;
+      border-radius: 0;
+      aspect-ratio: 1 / 1;
+    }
+
+    /* 기타 연산자: 오벌 (C, =) */
+    button:is(:nth-child(1), :nth-child(20)) {
+      background-color: #e0ffe0;
+      border-radius: 25px;
+    }
+  </style>
 </head>
 <body>
-  <p>Hello, World!</p>
+  <div class="operator">
+    <input type="text" class="display" id="display" readonly>
+
+    <div class="keypad">
+      <button onclick="clearDisplay()">C</button>
+      <span></span>
+      <span></span>
+      <button onclick="appendValue('÷')">÷</button>
+
+      <button onclick="appendValue('7')">7</button>
+      <button onclick="appendValue('8')">8</button>
+      <button onclick="appendValue('9')">9</button>
+      <button onclick="appendValue('×')">×</button>
+
+      <button onclick="appendValue('4')">4</button>
+      <button onclick="appendValue('5')">5</button>
+      <button onclick="appendValue('6')">6</button>
+      <button onclick="appendValue('-')">-</button>
+
+      <button onclick="appendValue('1')">1</button>
+      <button onclick="appendValue('2')">2</button>
+      <button onclick="appendValue('3')">3</button>
+      <button onclick="appendValue('+')">+</button>
+
+      <button onclick="appendValue('0')">0</button>
+      <button onclick="appendValue('.')">.</button>
+      <span></span>
+      <button onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendValue(val) {
+      display.value += val;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function calculateResult() {
+      try {
+        // 기호 변환: × → *, ÷ → /
+        const expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
+        const result = eval(expression);
+        display.value = result;
+      } catch (e) {
+        display.value = '오류';
+      }
+    }
+  </script>
 </body>
 </html>
